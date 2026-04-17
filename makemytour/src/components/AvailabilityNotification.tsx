@@ -1,8 +1,3 @@
-/**
- * Real-time Availability Notification Component
- * Displays live updates about availability changes
- */
-
 import React, { useEffect, useState } from "react";
 import { AlertCircle, CheckCircle, Clock, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -78,9 +73,6 @@ export function AvailabilityNotification({
   );
 }
 
-/**
- * Legacy Seating Availability Alert
- */
 export function LimitedAvailabilityWarning({
   availableCount,
   totalCount,
@@ -109,9 +101,6 @@ export function LimitedAvailabilityWarning({
   );
 }
 
-/**
- * Booking Confirmation with Availability Status
- */
 export function AvailabilityStatus({
   type,
   count,

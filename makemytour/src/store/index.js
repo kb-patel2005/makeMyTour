@@ -1,6 +1,6 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 
-const BACKEND_URL = "http://localhost:8080";
+const BACKEND_URL = " https://makemytour-5axz.onrender.com";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
@@ -124,7 +124,6 @@ const flightSlice = createSlice({
 
       if (index === -1) return;
 
-      // Update flight list
       if (newFlight.seatType == null) {
         state.flight[index] = {
           ...state.flight[index],
@@ -141,7 +140,6 @@ const flightSlice = createSlice({
             : { bussinesseats: newFlight.seatsMatrix }),
         };
 
-        // ✅ IMPORTANT: update seatMatrix ALSO
         if (
           state.seatType &&
           state.seatType.charAt(0).toLowerCase() ===

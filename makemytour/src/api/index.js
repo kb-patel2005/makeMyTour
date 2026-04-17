@@ -1,7 +1,7 @@
 import { doesNotMatch } from 'assert';
 import axios from 'axios';
 
-const BACKEND_URL = "http://localhost:8080";
+const BACKEND_URL = " https://makemytour-5axz.onrender.com";
 
 //done
 export const hotelsByPlace = async (place) => {
