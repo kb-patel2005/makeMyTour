@@ -31,7 +31,7 @@ export default function Notification({ trigger }: { trigger: React.ReactNode }) 
         });
         const data = await res.json();
         if (data) {
-          dispatch(addNotificationAsync(data));
+          dispatch(addNotificationAsync());
         }
       } catch (error) {
         console.error("Error fetching notifications:", error);

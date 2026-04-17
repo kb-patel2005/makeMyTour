@@ -32,14 +32,24 @@ export const postNotification = createAsyncThunk(
 
 export const addNotificationAsync = createAsyncThunk(
   "notifications/addNotificationAsync",
-  async (ids, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
+      // ✅ Step 1: get ids
+      const res = await fetch(`${BACKEND_URL}/booking/getIdList`,{
+        method:"GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }});
+      const ids = res.data;
+
       const results = await Promise.all(
-        ids.map(id => getNotificationById(id))
+        ids.map((id) => getNotificationById(id))
       );
+
       return results.filter(Boolean);
     } catch (err) {
-      return rejectWithValue(err);
+      return rejectWithValue(err.response?.data || err.message);
     }
   }
 );
