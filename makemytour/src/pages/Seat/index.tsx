@@ -64,12 +64,9 @@ export default function SeatsPage() {
   const seatLabels = ["A", "B", "C", "D", "E", "F"];
   useEffect(() => {
     if (!flightState) return;
-
-    const updatedSeats =
-      seatTypeRaw?.toLowerCase().startsWith("b")
+    const updatedSeats = seatTypeRaw?.toLowerCase().startsWith("b")
         ? flightState.bussinesseats
         : flightState.economicseats;
-
     if (updatedSeats) {
       dispatch(setSeatmatrix(updatedSeats));
     }

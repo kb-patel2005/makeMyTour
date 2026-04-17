@@ -14,7 +14,7 @@ export default function SocketProvider() {
       onFlight: (data) => {
         dispatch(updateFlight(data));
 
-        if (!seatType) {
+        if (seatType == null) {
           dispatch(postNotification({
             entityId: data.id,
             messages: {

@@ -9,13 +9,11 @@ import { setFlight, setSeatType } from "@/store";
 export default function Dashboard() {
 
   const dispatch = useDispatch();
-  const user = useSelector((state:any)=>state.user.user);
   const flights = useSelector((state: any) => state.flights.flight);
 
   useEffect(() => {
     const fetchFlights = async () => {
       const token = localStorage.getItem("Authorization")
-      dispatch(setSeatType(null))
       const res = await axios.get(`http://localhost:8080/flight`,{
         headers:{
           Authorization: `Bearer ${token}`
