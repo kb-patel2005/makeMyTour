@@ -14,8 +14,7 @@ type SimpleDay = {
 
 const BASE_PRICE = 5000;
 
-// API data
-const flightHistory: PriceDay[] = []; // if exists → use directly
+const flightHistory: PriceDay[] = [];
 
 const holidays: SimpleDay[] = [
   { date: "2026-01-26", price: 5000 },
@@ -30,7 +29,6 @@ export default function PriceCalendarPage() {
   const [data, setData] = useState<PriceDay[]>([]);
 
   useEffect(() => {
-    // ✅ 1. If history exists → use directly
     if (flightHistory.length > 0) {
       setData(flightHistory);
       return;
@@ -45,7 +43,6 @@ export default function PriceCalendarPage() {
 
       const dateStr = d.toISOString().split("T")[0];
 
-      // ✅ Holiday check
       const holiday = holidays.find((h) => h.date === dateStr);
       if (holiday) {
         result.push({
@@ -55,7 +52,6 @@ export default function PriceCalendarPage() {
         continue;
       }
 
-      // ✅ Festival check
       const festival = festivals.find((f) => f.date === dateStr);
       if (festival) {
         result.push({
@@ -65,7 +61,6 @@ export default function PriceCalendarPage() {
         continue;
       }
 
-      // ✅ Normal day
       const randomOffset = Math.floor(Math.random() * 200) - 100;
 
       result.push({

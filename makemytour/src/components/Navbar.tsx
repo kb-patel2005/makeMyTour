@@ -48,70 +48,66 @@ const Navbar = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
-      
+
       <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center h-16">
 
-  {/* LEFT - LOGO */}
-  <div className="flex items-center space-x-2">
-    <Plane className="w-7 h-7 text-red-500" />
-    <span className="text-xl md:text-2xl font-bold">MakeMyTour</span>
-  </div>
+        <div className="flex items-center space-x-2">
+          <Plane className="w-7 h-7 text-red-500" />
+          <span className="text-xl md:text-2xl font-bold">MakeMyTour</span>
+        </div>
 
-  {/* 🔥 SPACER pushes content to right */}
-  <div className="flex-1" />
+        <div className="flex-1" />
 
-  {/* RIGHT SIDE (DESKTOP NAV) */}
-  {user && (
-    <div className="hidden md:flex items-center gap-8">
+        {user && (
+          <div className="hidden md:flex items-center gap-8">
 
-      <Notification trigger={<Bell className="w-5 h-5 cursor-pointer" />} />
+            <Notification trigger={<Bell className="w-5 h-5 cursor-pointer" />} />
 
-      <Link href="/dashboard">Dashboard</Link>
+            <Link href="/dashboard">Dashboard</Link>
 
-      {user.role === "ADMIN" && (
-        <Button size="sm" onClick={() => router.push("/admin")}>
-          ADMIN
-        </Button>
-      )}
+            {user.role === "ADMIN" && (
+              <Button size="sm" onClick={() => router.push("/admin")}>
+                ADMIN
+              </Button>
+            )}
 
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Avatar className="cursor-pointer">
-            <AvatarFallback>
-              {user?.firstName?.charAt(0)}
-            </AvatarFallback>
-          </Avatar>
-        </DropdownMenuTrigger>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Avatar className="cursor-pointer">
+                  <AvatarFallback>
+                    {user?.firstName?.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>{user.firstName}</DropdownMenuLabel>
-          <DropdownMenuSeparator />
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>{user.firstName}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
 
-          <DropdownMenuItem onClick={() => router.push("/profile")}>
-            <User className="mr-2 h-4 w-4" /> Profile
-          </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push("/profile")}>
+                  <User className="mr-2 h-4 w-4" /> Profile
+                </DropdownMenuItem>
 
-          <DropdownMenuItem onClick={logout}>
-            <LogOut className="mr-2 h-4 w-4" /> Logout
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
-  )}
+                <DropdownMenuItem onClick={logout}>
+                  <LogOut className="mr-2 h-4 w-4" /> Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        )}
 
-  {/* MOBILE RIGHT */}
-  <div className="flex items-center gap-3 md:hidden">
-    {!user && (
-      <SignupDialog
-        trigger={<Button className="bg-blue-600 text-white">Sign Up</Button>}
-      />
-    )}
+        <div className="flex items-center gap-3 md:hidden">
+          {!user && (
+            <SignupDialog
+              trigger={<Button className="bg-blue-600 text-white">Sign Up</Button>}
+            />
+          )}
 
-    <button onClick={() => setOpenMenu(true)}>
-      <Menu />
-    </button>
-  </div>
-</div>
+          <button onClick={() => setOpenMenu(true)}>
+            <Menu />
+          </button>
+        </div>
+      </div>
 
       <div
         className={`fixed top-0 right-0 h-full w-72 bg-white shadow-lg transform transition-transform duration-300 z-50
@@ -174,7 +170,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* BACKDROP */}
       {openMenu && (
         <div
           className="fixed inset-0 bg-black/40 z-40"

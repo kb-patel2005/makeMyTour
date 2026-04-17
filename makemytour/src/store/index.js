@@ -77,9 +77,6 @@ const hotelslice = createSlice({
       const newHotel = action.payload;
       if (!newHotel) return;
 
-      console.log("Updating hotel:", newHotel);
-
-      // ✅ always create NEW reference (important)
       if (Array.isArray(state.hotels)) {
         state.hotels = state.hotels.map((h) =>
           h._id === newHotel._id ? newHotel : h
