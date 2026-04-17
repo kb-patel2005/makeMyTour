@@ -1,26 +1,44 @@
-# Use an official Maven image with Java 17 for building
-FROM maven:3.9.5-eclipse-temurin-17 AS build
+# ---------- FRONTEND BUILD ----------
+FROM node:20-alpine AS frontend-build
 
-# Set the working directory inside the container
-WORKDIR /app
+WORKDIR /frontend
 
-# Copy the project files
-COPY . .
+# copy frontend only
+COPY makemytrip/package*.json ./
+RUN npm install
 
-# Build the project without running tests
+COPY makemytrip/ .
+RUN npm run build
+
+
+# ---------- BACKEND BUILD ----------
+FROM maven:3.9.5-eclipse-temurin-17 AS backend-build
+
+WORKDIR /backend
+
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+COPY src ./src
 RUN mvn clean package -DskipTests
 
-# Use a lightweight JDK 17 image for running the application
+
+# ---------- FINAL IMAGE ----------
 FROM eclipse-temurin:17-jre
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy only the built JAR file from the previous stage
-COPY --from=build /app/target/makemytrip-0.0.1-SNAPSHOT.jar app.jar
+# copy backend jar
+COPY --from=backend-build /backend/target/*.jar app.jar
 
-# Expose the application port
-EXPOSE 8080
+# copy frontend build (Next.js standalone)
+COPY --from=frontend-build /frontend/.next /app/.next
+COPY --from=frontend-build /frontend/public /app/public
+COPY --from=frontend-build /frontend/package.json /app/package.json
+COPY --from=frontend-build /frontend/node_modules /app/node_modules
 
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# expose ports
+EXPOSE 8080 3000
+
+# run both (backend + frontend)
+CMD ["sh", "-c", "java -jar app.jar & npm start"]
