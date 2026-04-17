@@ -4,10 +4,10 @@ FROM node:20-alpine AS frontend-build
 WORKDIR /frontend
 
 # copy frontend only
-COPY makemytrip/package*.json ./
+COPY makemytour/package*.json ./
 RUN npm install
 
-COPY makemytrip/ .
+COPY makemytour/ .
 RUN npm run build
 
 
