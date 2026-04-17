@@ -84,7 +84,7 @@ export default function Reviews({ review }: { review: Review[] }) {
                 {r.photos.map((img, i) => (
                   <img
                     key={i}
-                    src={`data:image/jpeg;base64,${img.data}`}
+                    src={`data:image/jpeg;base64,${img}`}
                     className="w-20 h-20 object-cover rounded"
                   />
                 ))}
