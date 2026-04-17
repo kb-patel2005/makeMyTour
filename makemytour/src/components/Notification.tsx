@@ -13,7 +13,7 @@ interface Notification {
 export default function Notification({ trigger }: { trigger: React.ReactNode }) {
 
   const selector = useSelector((state: any) => state.notification.notifications);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const [open, setOpen] = React.useState(false);
   const token = useState<string>(
     typeof window !== "undefined"
@@ -24,7 +24,7 @@ export default function Notification({ trigger }: { trigger: React.ReactNode }) 
     if (!token) return;
     const fetchNotification = async () => {
       try {
-        const res = await fetch(` https://makemytour-5axz.onrender.com/booking/getIdList`, {
+        const res = await fetch(`https://makemytour-5axz.onrender.com/booking/getIdList`, {
           headers: {
             "Authorization": `Bearer ${token[0]}`
           }

@@ -32,11 +32,15 @@ export const postNotification = createAsyncThunk(
 
 export const addNotificationAsync = createAsyncThunk(
   "notifications/addNotificationAsync",
-  async (ids) => {
-    const results = await Promise.all(
-      ids.map(id => getNotificationById(id))
-    );
-    return results;
+  async (ids, { rejectWithValue }) => {
+    try {
+      const results = await Promise.all(
+        ids.map(id => getNotificationById(id))
+      );
+      return results.filter(Boolean);
+    } catch (err) {
+      return rejectWithValue(err);
+    }
   }
 );
 
