@@ -15,6 +15,7 @@ export default function SocketProvider() {
       onFlight: (data) => {
         dispatch(updateFlight(data));
 
+        // ✅ Sync seatMatrix directly
         if (
           data.seatType &&
           seatType &&
@@ -26,6 +27,7 @@ export default function SocketProvider() {
           }
         }
 
+        // Notification (only when not inside seat page)
         if (!seatType) {
           dispatch(postNotification({
             entityId: data.id,
@@ -40,7 +42,6 @@ export default function SocketProvider() {
     });
 
     return () => disconnectSocket();
-  }, [seatType, dispatch]); // ✅ IMPORTANT
-
+  }, [seatType]);
   return null;
 }

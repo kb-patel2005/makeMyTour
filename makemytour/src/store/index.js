@@ -117,19 +117,37 @@ const flightSlice = createSlice({
     setSeatmatrix: (state, action) => { state.seatMatrix = action.payload.map((row) => [...row]); },
     updateFlight: (state, action) => {
       const newFlight = action.payload;
-      if (!state.flight || state.flight.length == 0) { }
-      else if (newFlight.seatType == null) {
-        state.flight.map((data, index) => {
-          if (data.id == newFlight.id) {
-            state.flight[index] = { ...state.flight[index], status: newFlight.status }
-          }
-        })
+
+      if (!state.flight || state.flight.length === 0) return;
+
+      const index = state.flight.findIndex((f) => f.id === newFlight.id);
+
+      if (index === -1) return;
+
+      // Update flight list
+      if (newFlight.seatType == null) {
+        state.flight[index] = {
+          ...state.flight[index],
+          status: newFlight.status,
+        };
       } else {
-        const index = state.flight.findIndex((f) => f.id == newFlight.id);
-        if (index !== -1) {
-          state.seatType.toLowerCase.charAt(0) == "e"?
-          state.flight[index] = {...state.flight[index], economicseats:newFlight.seatsMatrix }:
-          state.flight[index] = {...state.flight[index], bussinesseats:newFlight.seatsMatrix };
+        const isEconomy =
+          newFlight.seatType?.charAt(0).toLowerCase() === "e";
+
+        state.flight[index] = {
+          ...state.flight[index],
+          ...(isEconomy
+            ? { economicseats: newFlight.seatsMatrix }
+            : { bussinesseats: newFlight.seatsMatrix }),
+        };
+
+        // ✅ IMPORTANT: update seatMatrix ALSO
+        if (
+          state.seatType &&
+          state.seatType.charAt(0).toLowerCase() ===
+          newFlight.seatType.charAt(0).toLowerCase()
+        ) {
+          state.seatMatrix = newFlight.seatsMatrix.map((row) => [...row]);
         }
       }
     }
