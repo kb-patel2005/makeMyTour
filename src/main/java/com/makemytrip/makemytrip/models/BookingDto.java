@@ -1,0 +1,141 @@
+package com.makemytrip.makemytrip.models;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDateTime;
+
+@Document(collection = "booking")
+public class BookingDto {
+
+    private String id;
+    private String userId; 
+    private String bookingId;
+    private String type; // FLIGHT / HOTEL
+    private LocalDateTime bookingDate;
+    private int quantity;
+    private String seat;
+    private double totalPrice;
+    private String status; 
+    private String reason;
+    private String cancellationReason;
+    private double refundAmount;
+    private String refundStatus;
+    private LocalDateTime refundDate;
+
+    public String getSeat() {
+        return seat;
+    }
+    public void setSeat(String seat) {
+        this.seat = seat;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+    public String getReason() {
+        return reason;
+    }
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public LocalDateTime getBookingDate() {
+        return bookingDate;
+    }
+
+    public void setBookingDate(LocalDateTime bookingDate) {
+        this.bookingDate = bookingDate;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getCancellationReason() {
+        return cancellationReason;
+    }
+
+    public void setCancellationReason(String cancellationReason) {
+        this.cancellationReason = cancellationReason;
+    }
+
+    public double getRefundAmount() {
+        return refundAmount;
+    }
+
+    public void setRefundAmount(double refundAmount) {
+        this.refundAmount = refundAmount;
+    }
+
+    public String getRefundStatus() {
+        return refundStatus;
+    }
+
+    public void setRefundStatus(String refundStatus) {
+        this.refundStatus = refundStatus;
+    }
+
+    public LocalDateTime getRefundDate() {
+        return refundDate;
+    }
+
+    public void setRefundDate(LocalDateTime refundDate) {
+        this.refundDate = refundDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Booking [id=" + id + ", userId=" + userId + ", type=" + type + ", bookingDate=" + bookingDate
+                + ", quantity=" + quantity + ", totalPrice=" + totalPrice + ", status=" + status + ", reason=" + reason
+                + ", cancellationReason=" + cancellationReason + ", refundAmount=" + refundAmount + ", refundStatus="
+                + refundStatus + ", refundDate=" + refundDate + "]";
+    }
+
+    public String getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(String bookingId) {
+        this.bookingId = bookingId;
+    }
+
+    
+}
