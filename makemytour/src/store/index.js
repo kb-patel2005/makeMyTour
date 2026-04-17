@@ -115,9 +115,8 @@ const flightSlice = createSlice({
     setSeatType: (state, action) => { state.seatType = action.payload },
     setQty: (state, action) => { state.quantity = action.payload },
     setSeatmatrix: (state, action) => { state.seatMatrix = action.payload.map((row) => [...row]); },
-    updateFlight: (state, { dispatch,payload }) => {
-      const newFlight = payload;
-      alert(JSON.stringify(newFlight))
+    updateFlight: (state, action) => {
+      const newFlight = action.payload;
       if (!state.flight || state.flight.length == 0) { }
       else if (newFlight.seatType == null) {
         state.flight.map((data, index) => {
@@ -126,18 +125,11 @@ const flightSlice = createSlice({
           }
         })
       } else {
-        alert(`hi ${JSON.stringify(payload)}`)
-        alert(`${JSON.stringify(state.flight)}`)
         const index = state.flight.findIndex((f) => f.id == newFlight.id);
-        alert(index)
         if (index !== -1) {
-          state.flight[index] = newFlight;
-          alert(newFlight.seatType?.charAt(0).toLowerCase() ===
-            state.seatType?.charAt(0).toLowerCase())
-          if (newFlight.seatType?.charAt(0).toLowerCase() ===
-            state.seatType?.charAt(0).toLowerCase()){
-            dispatch(setSeatmatrix(seatsMatrix))
-          }
+          state.seatType.toLowerCase.charAt(0) == "e"?
+          state.flight[index] = {...state.flight[index], economicseats:newFlight.seatsMatrix }:
+          state.flight[index] = {...state.flight[index], bussinesseats:newFlight.seatsMatrix };
         }
       }
     }

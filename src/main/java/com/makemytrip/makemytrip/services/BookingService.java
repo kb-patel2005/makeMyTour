@@ -100,13 +100,7 @@ public class BookingService {
             Optional<Flight> optionalFlight = flightRepository.findById(booking.getBookingId());
             if (optionalFlight.isPresent()) {
                 Flight flight = optionalFlight.get();
-                if (flight.getAvailableSeats() >= booking.getQuantity()) {
-                    flight.setAvailableSeats(
-                            flight.getAvailableSeats() - booking.getQuantity());
                     flightRepository.save(flight);
-                } else {
-                    throw new RuntimeException("Not enough seats available");
-                }
             }
         } else if ("HOTEL".equalsIgnoreCase(booking.getType())) {
             Optional<Hotel> optionalHotel = hotelRepository.findById(booking.getBookingId());

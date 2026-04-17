@@ -11,10 +11,22 @@ export default function SocketProvider() {
   useEffect(() => {
     connectSocket({
       onHotel: (data) => dispatch(updateHotel(data)),
+
       onFlight: (data) => {
         dispatch(updateFlight(data));
 
-        if (seatType == null) {
+        if (
+          data.seatType &&
+          seatType &&
+          data.seatType.charAt(0).toLowerCase() ===
+          seatType.charAt(0).toLowerCase()
+        ) {
+          if (data.seatsMatrix) {
+            dispatch(setSeatmatrix(data.seatsMatrix));
+          }
+        }
+
+        if (!seatType) {
           dispatch(postNotification({
             entityId: data.id,
             messages: {
@@ -24,19 +36,11 @@ export default function SocketProvider() {
             }
           }));
         }
-        if (data.seatType && seatType) {
-          if (
-            data.seatType.charAt(0).toLowerCase() ===
-            seatType.charAt(0).toLowerCase()
-          ) {
-            if (data.seatsMatrix) { dispatch(setSeatmatrix(data.seatsMatrix)); }
-          }
-        }
       },
     });
 
     return () => disconnectSocket();
-  }, []);
+  }, [seatType, dispatch]); // ✅ IMPORTANT
 
   return null;
 }

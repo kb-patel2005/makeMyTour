@@ -14,11 +14,13 @@ public class FlightDto {
     private String departureTime;
     private String arrivalTime;
     private double price;
+    private double basePrice;
     private int availableSeats;
     private int totalReviews;
     private List<TimePrice> priceHistory;
     private boolean[][] economicseats;
     private boolean[][] bussinesseats;
+    
     public boolean[][] getEconomicseats() {
         return economicseats;
     }
@@ -112,6 +114,12 @@ public class FlightDto {
     }
     public void setTotalReviews(int totalReviews) {
         this.totalReviews = totalReviews;
+    }
+    public double getBasePrice() {
+        return basePrice;
+    }
+    public void setBasePrice(double basePrice) {
+        this.basePrice = basePrice;
     }
 
 }

@@ -15,10 +15,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.makemytrip.makemytrip.models.Flight;
 import com.makemytrip.makemytrip.models.Hotel;
 import com.makemytrip.makemytrip.models.Room;
+import com.makemytrip.makemytrip.models.TimePrice;
 import com.makemytrip.makemytrip.repositories.UserRepository;
 import com.makemytrip.makemytrip.repositories.FlightRepository;
 import com.makemytrip.makemytrip.repositories.HotelRepository;
 import jakarta.security.auth.message.AuthException;
+
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -54,17 +57,26 @@ public class AdminController {
         boolean isAdmin = authentication.getAuthorities().stream()
                 .anyMatch(role -> role.getAuthority().equals("ADMIN"));
         if (isAdmin) {
-            boolean[][] seats = new boolean[10][4];
+            boolean[][] economicSeats = new boolean[10][4];
+            boolean[][] businessSeats = new boolean[10][4];
             for (int i = 0; i < 10; i++) {
                 for (int j = 0; j < 4; j++) {
-                    seats[i][j] = false;
+                    economicSeats[i][j] = false;
+                    businessSeats[i][j] = false;
                 }
             }
-            flight.setEconomicseats(seats);
-            flight.setBussinesseats(seats);
+            flight.setEconomicseats(economicSeats);
+            flight.setBussinesseats(businessSeats);
+            flight.setBasePrice(flight.getPrice());
+            if (flight.getPriceHistory() == null) {
+                flight.setPriceHistory(new ArrayList<>());
+            }
+            flight.getPriceHistory().add(
+                    new TimePrice(flight.getPrice(), Instant.now().toString()));
             return flightRepository.save(flight);
         }
-        throw new AccessDeniedException("Only admin add can access");
+
+        throw new AccessDeniedException("Only admin can add flight");
     }
 
     @PostMapping("/hotel")
@@ -111,16 +123,11 @@ public class AdminController {
             if (flightOptional.isPresent()) {
                 Flight flight = flightOptional.get();
                 flight.setId(id);
-                // flight.setFlightName(updatedFlight.getFlightName());
-                // flight.setFrom(updatedFlight.getFrom());
-                // flight.setTo(updatedFlight.getTo());
                 flight.setDepartureTime(updatedFlight.getDepartureTime());
                 flight.setArrivalTime(updatedFlight.getArrivalTime());
                 flight.setPrice(updatedFlight.getPrice());
-                // flight.setAvailableSeats(updatedFlight.getAvailableSeats());
                 flight.setStatus(updatedFlight.getStatus());
-                flight.setDelayReason(updatedFlight.getDelayReason());
-                // flight.setPriceHistory(updatedFlight.getPriceHistory());
+                flight.setDelayReason(updatedFlight.getDelayReason());  
                 flightRepository.save(flight);
                 return ResponseEntity.ok(flight);
             }

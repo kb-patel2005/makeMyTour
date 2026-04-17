@@ -102,10 +102,10 @@ public class RootController {
         return ResponseEntity.ok(dtos);
     }
 
-    /**************** all for flight ***************/
     private double getDemandRatio(Flight flight) {
         int booked = 0;
         int total = 0;
+
         for (boolean[] row : flight.getEconomicseats()) {
             for (boolean seat : row) {
                 if (seat)
@@ -113,6 +113,7 @@ public class RootController {
                 total++;
             }
         }
+
         for (boolean[] row : flight.getBussinesseats()) {
             for (boolean seat : row) {
                 if (seat)
@@ -120,35 +121,36 @@ public class RootController {
                 total++;
             }
         }
+
         return total == 0 ? 0 : (double) booked / total;
     }
 
     private double calculatePrice(Flight flight) {
-        double basePrice = flight.getPrice();
+        double basePrice = flight.getBasePrice(); 
         double finalPrice = basePrice;
-        double demand = getDemandRatio(flight); // 0 → 1
+
+        double demand = getDemandRatio(flight);
+
         if (demand >= 0.8) {
             finalPrice *= 1.10;
         } else if (demand >= 0.6) {
             finalPrice *= 1.08;
         } else if (demand >= 0.4) {
-            finalPrice *= 1.08;
+            finalPrice *= 1.06;
         } else if (demand >= 0.2) {
             finalPrice *= 1.05;
         }
         LocalDate departure = LocalDate.parse(flight.getDepartureTime().substring(0, 10));
         Month month = departure.getMonth();
-        double seasonalFactor = 1.0;
-        if (month == Month.DECEMBER) {
-            seasonalFactor = 1.10;
-        } else if (month == Month.JANUARY) {
-            seasonalFactor = 1.08;
-        } else if (month == Month.MAY) {
-            seasonalFactor = 1.08;
-        } else if (month == Month.JUNE) {
-            seasonalFactor = 1.05;
-        }
+        double seasonalFactor = switch (month) {
+            case DECEMBER -> 1.10;
+            case JANUARY, MAY -> 1.08;
+            case JUNE -> 1.05;
+            default -> 1.0;
+        };
+
         finalPrice *= seasonalFactor;
+
         return Math.round(finalPrice);
     }
 
@@ -162,6 +164,7 @@ public class RootController {
             if (lastPrice == newPrice)
                 return;
         }
+
         history.add(new TimePrice(newPrice, Instant.now().toString()));
     }
 
@@ -190,7 +193,7 @@ public class RootController {
             preferenceService.updatePreference(userId, flight, "VIEW");
         }
         double newPrice = calculatePrice(flight);
-        if (flight.getPrice() != newPrice) {
+        if (Math.abs(flight.getPrice() - newPrice) > 0.01) {
             flight.setPrice(newPrice);
             updatePriceHistory(flight, newPrice);
             flightRepository.save(flight);

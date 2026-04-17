@@ -19,6 +19,7 @@ public class Flight {
     private String departureTime;
     private String arrivalTime;
     private double price;
+    private double basePrice;
     private int availableSeats;
     private int totalReviews;
     private List<TimePrice> priceHistory;
@@ -28,53 +29,70 @@ public class Flight {
     public boolean[][] getEconomicseats() {
         return economicseats;
     }
+
     public void setEconomicseats(boolean[][] economicseats) {
         this.economicseats = economicseats;
     }
+
     public boolean[][] getBussinesseats() {
         return bussinesseats;
     }
+
     public void setBussinesseats(boolean[][] bussinesseats) {
         this.bussinesseats = bussinesseats;
     }
+
     public List<TimePrice> getPriceHistory() {
         return priceHistory;
     }
+
     public void setPriceHistory(List<TimePrice> priceHistory) {
         this.priceHistory = priceHistory;
     }
+
     public String getStatus() {
         return status;
     }
+
     public void setStatus(String status) {
         this.status = status;
     }
+
     public String getDelayReason() {
         return delayReason;
     }
+
     public void setDelayReason(String delayReason) {
         this.delayReason = delayReason;
     }
+
     public Flight() {
     }
+
     public String getId() {
         return id;
     }
+
     public void setId(String id) {
         this.id = id;
     }
+
     public String getFlightName() {
         return flightName;
     }
+
     public void setFlightName(String flightName) {
         this.flightName = flightName;
     }
+
     public String getFrom() {
         return from;
     }
+
     public void setFrom(String from) {
         this.from = from;
     }
+
     public String getTo() {
         return to;
     }
@@ -114,10 +132,20 @@ public class Flight {
     public void setAvailableSeats(int availableSeats) {
         this.availableSeats = availableSeats;
     }
+
     public int getTotalReviews() {
         return totalReviews;
     }
+
     public void setTotalReviews(int totalReviews) {
         this.totalReviews = totalReviews;
+    }
+
+    public double getBasePrice() {
+        return basePrice;
+    }
+
+    public void setBasePrice(double basePrice) {
+        this.basePrice = basePrice;
     }
 }
