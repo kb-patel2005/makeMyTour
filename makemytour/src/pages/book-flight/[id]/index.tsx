@@ -30,7 +30,7 @@ import {
 import { Button } from "@/components/ui/button";
 import SignupDialog from "@/components/SignupDialog";
 import Loader from "@/components/Loader";
-import { setFlight, setQty, setSeatmatrix, setSeatType, setUser } from "@/store";
+import { setFlight, setQty, setSeatType, setUser } from "@/store";
 import Chart from "@/components/Chart";
 import Reccomendation from "@/components/Reccomendation";
 import Reviews from "@/components/Reviews";
@@ -84,7 +84,7 @@ const BookFlightPage = () => {
   if (loading) return <Loader />;
   if (flights.length === 0) return <div>No flight found</div>;
 
-  const flight = flights;
+  const flight = flights[0];
   const basePrice = flight?.price * quantity;
 
   const totalPrice =
