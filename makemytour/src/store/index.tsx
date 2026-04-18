@@ -73,7 +73,7 @@ export const addNotificationAsync = createAsyncThunk<
       }
     );
 
-    const ids = await res.json(); // ✅ FIXED
+    const ids = await res.json(); 
 
     const results = await Promise.all(
       ids.map((id: string) => getNotificationById(id))
@@ -112,8 +112,6 @@ export const fetchNotifications = createAsyncThunk<any[], string[]>(
   }
 );
 
-/* ===================== HOTEL SLICE ===================== */
-
 const hotelslice = createSlice({
   name: "hotels",
   initialState: { hotels: null as any, selectedRoom: null as any },
@@ -136,8 +134,6 @@ const hotelslice = createSlice({
     },
   },
 });
-
-/* ===================== FLIGHT SLICE ===================== */
 
 const flightSlice = createSlice({
   name: "flights",
@@ -175,8 +171,6 @@ const flightSlice = createSlice({
   },
 });
 
-/* ===================== NOTIFICATION SLICE ===================== */
-
 const notificationSlice = createSlice({
   name: "notifications",
   initialState: {
@@ -205,8 +199,6 @@ const notificationSlice = createSlice({
   },
 });
 
-/* ===================== USER SLICE ===================== */
-
 const userSlice = createSlice({
   name: "user",
   initialState: { user: null } as UserState,
@@ -221,8 +213,6 @@ const userSlice = createSlice({
   },
 });
 
-/* ===================== STORE ===================== */
-
 const store = configureStore({
   reducer: {
     hotels: hotelslice.reducer,
@@ -231,8 +221,6 @@ const store = configureStore({
     notification: notificationSlice.reducer,
   },
 });
-
-/* ===================== EXPORTS ===================== */
 
 export const { setUser, clearUser } = userSlice.actions;
 export const { setHotels, setRoom, updateHotel } = hotelslice.actions;

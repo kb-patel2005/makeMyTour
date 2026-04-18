@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog'
 import { Button } from './ui/button'
 import { useDispatch, useSelector } from 'react-redux';
-import { addNotification, addNotificationAsync } from '@/store';
+import { addNotificationAsync } from '@/store';
 
 interface Notification {
   message?: string,
