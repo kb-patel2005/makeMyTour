@@ -184,7 +184,7 @@ function HotelForm({ id }: { id?: string }) {
   useEffect(() => {
     if (!id) return;
 
-    axios.get(`http://localhost:8080/hotel/${id}`)
+    axios.get(`https://makemytour-5axz.onrender.com/hotel/${id}`)
       .then((res) => {
         const data = res.data;
         setHotel({
@@ -301,10 +301,10 @@ function HotelForm({ id }: { id?: string }) {
 
     try {
       if (id) {
-        await axios.put(`http://localhost:8080/hotel/${id}`, formData);
+        await axios.put(`https://makemytour-5axz.onrender.com/hotel/${id}`, formData);
         alert("Hotel updated");
       } else {
-        await axios.post(`http://localhost:8080/hotel`, formData);
+        await axios.post(`https://makemytour-5axz.onrender.com/hotel`, formData);
         alert("Hotel created");
       }
     } catch (err) {

@@ -6,18 +6,21 @@ type Reply = {
   userId?: string;
   email?: string;
   message: string;
+  createdAt: string;
 };
 
-export type Review = {
+type Review = {
   id: string;
-  userId: string;
   feedback: string;
   rating: number;
-  userName: string;
-  photos?: string[];
-  replies?: Reply[];
-  helpfulCount: number;
-  createdAt: string;
+  createdAt?: any;
+  photos?: any[];
+  replies?: Reply[] | null;
+  entityId: string;
+  entityType: string;
+  flagged?: boolean;
+  helpfulCount?: any;
+  userId: string;
 };
 
 export default function Reviews({ review }: { review: Review[] }) {
@@ -66,7 +69,6 @@ export default function Reviews({ review }: { review: Review[] }) {
           <div key={r.id} className="border rounded-xl p-4 space-y-2">
 
             <div className="flex justify-between">
-              <div className="font-semibold">{r.userName}</div>
               <div className="text-sm text-gray-500">
                 {r.createdAt}
               </div>

@@ -15,9 +15,9 @@ import { useSelector } from "react-redux";
 import { updateReview } from "@/api";
 
 type Reply = {
-  userId: string;
+  userId?: string;
+  email?: string;
   message: string;
-  email: string;
   createdAt: string;
 };
 
@@ -60,7 +60,7 @@ export default function ReplyBox({ trigger, review }: Props) {
     setOpen(true);
   };
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!message.trim()) return;
 
     const newReply: Reply = {
@@ -72,11 +72,13 @@ export default function ReplyBox({ trigger, review }: Props) {
 
     const updatedReplies = [...replies, newReply];
 
-    console.log(updatedReplies)
-    setReplies(updatedReplies);
-    updateReview(updatedReplies, review.id);
-
-    setMessage("");
+    try {
+      setReplies(updatedReplies);
+      await updateReview({ replies: updatedReplies }, review.id);
+      setMessage("");
+    } catch (err) {
+      console.error("Reply failed:", err);
+    }
   };
 
   return (
@@ -119,7 +121,7 @@ export default function ReplyBox({ trigger, review }: Props) {
           </div>
         </ScrollArea>
 
-        { user?.email &&  
+        {user?.email &&
           <div className="flex gap-2 mt-2">
             <Input
               placeholder="Write a reply..."
