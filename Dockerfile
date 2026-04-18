@@ -26,19 +26,18 @@ RUN mvn clean package -DskipTests
 # ---------- FINAL IMAGE ----------
 FROM eclipse-temurin:17-jre
 
+# ✅ install node + npm
+RUN apt-get update && apt-get install -y nodejs npm
+
 WORKDIR /app
 
-# copy backend jar
 COPY --from=backend-build /backend/target/*.jar app.jar
 
-# copy frontend build (Next.js standalone)
 COPY --from=frontend-build /frontend/.next /app/.next
 COPY --from=frontend-build /frontend/public /app/public
 COPY --from=frontend-build /frontend/package.json /app/package.json
 COPY --from=frontend-build /frontend/node_modules /app/node_modules
 
-# expose ports
 EXPOSE 8080 3000
 
-# run both (backend + frontend)
 CMD ["sh", "-c", "java -jar app.jar & npm start"]
