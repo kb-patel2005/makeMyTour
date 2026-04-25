@@ -11,6 +11,8 @@ import com.makemytrip.makemytrip.models.Booking;
 import com.makemytrip.makemytrip.models.Flight;
 import com.makemytrip.makemytrip.models.Hotel;
 import com.makemytrip.makemytrip.models.Room;
+
+import com.makemytrip.makemytrip.models.TimePrice;
 import com.makemytrip.makemytrip.repositories.BookingRepository;
 import com.makemytrip.makemytrip.repositories.FlightRepository;
 import com.makemytrip.makemytrip.repositories.HotelRepository;
