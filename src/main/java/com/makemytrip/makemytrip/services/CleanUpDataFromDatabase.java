@@ -50,23 +50,38 @@ public class CleanUpDataFromDatabase {
         bookingRepository.deleteAll(bookings);
     }
 
-    @Scheduled(fixedRate = 3600000) 
+    @Scheduled(fixedRate = 3600000)
     public void resetSeatsAfterArrival() {
         List<Flight> flights = flightRepository.findAll();
         for (Flight flight : flights) {
             if (flight.getArrivalTime() == null)
                 continue;
+
             LocalDateTime arrival = LocalDateTime.parse(flight.getArrivalTime());
+
             if (arrival.isBefore(LocalDateTime.now())) {
+                // Reset seats
                 boolean[][] eco = new boolean[10][4];
                 boolean[][] bus = new boolean[10][4];
                 flight.setEconomicseats(eco);
                 flight.setBussinesseats(bus);
+                flight.setAvailableSeats(80);
+                flight.setStatus("ON_TIME");
+                flight.setDelayReason(null);
+                flight.setPrice(flight.getBasePrice());
+                if (flight.getPriceHistory() != null) {
+                    flight.getPriceHistory().add(new TimePrice(LocalDateTime.now(), flight.getBasePrice()));
+                }
+                LocalDateTime newArrival = arrival.plusDays(1);
+                LocalDateTime newDeparture = LocalDateTime.parse(flight.getDepartureTime()).plusDays(1);
+                flight.setArrivalTime(newArrival.toString());
+                flight.setDepartureTime(newDeparture.toString());
                 flightRepository.save(flight);
                 notificationRepository.deleteByEntityId(flight.getId());
             }
         }
     }
+
 
     @Scheduled(cron = "0 0 13 * * ?")
     public void resetHotelRooms() {
