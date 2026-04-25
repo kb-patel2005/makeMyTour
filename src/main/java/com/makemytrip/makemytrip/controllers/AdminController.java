@@ -82,33 +82,40 @@ public class AdminController {
     @PostMapping("/hotel")
     public Hotel createHotel(
             @RequestPart("hotel") String hotelJson,
-            @RequestParam MultiValueMap<String, MultipartFile> fileMap) throws Exception {
+            @RequestPart(value = "files", required = false) List<MultipartFile> files
+    ) throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.getAuthorities().contains("ADMIN")) {
-            ObjectMapper mapper = new ObjectMapper();
-            Hotel hotel = mapper.readValue(hotelJson, Hotel.class);
-            if (hotel.getRooms() == null) {
-                hotel.setRooms(new ArrayList<>());
-            }
-            List<Room> rooms = hotel.getRooms();
-            System.out.println("FILES KEYS: " + fileMap.keySet());
-            for (int i = 0; i < rooms.size(); i++) {
-                List<MultipartFile> files = fileMap.get("files_" + i);
-                if (files != null) {
-                    List<byte[]> images = new ArrayList<>();
-                    for (MultipartFile f : files) {
-                        images.add(f.getBytes());
-                    }
-                    rooms.get(i).setImages(images);
-                    rooms.get(i).setAvailability(
-                            new ArrayList<>(
-                                    Collections.nCopies(Integer.parseInt(rooms.get(i).getTotalRooms()), false)));
-                    System.out.println("Room " + i + " images: " + images.size());
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ADMIN"));
+    
+        if (!isAdmin) {
+            throw new AuthException("Only admin can do this activity");
+        }
+    
+        ObjectMapper mapper = new ObjectMapper();
+        Hotel hotel = mapper.readValue(hotelJson, Hotel.class);
+    
+        if (hotel.getRooms() == null) {
+            hotel.setRooms(new ArrayList<>());
+        }
+    
+        List<Room> rooms = hotel.getRooms();
+        int fileIndex = 0;
+    
+        for (Room room : rooms) {
+            List<byte[]> images = new ArrayList<>();
+            if (files != null) {
+                for (MultipartFile f : files) {
+                    images.add(f.getBytes());
                 }
             }
-            return hotelRepository.save(hotel);
+            room.setImages(images);
+            room.setAvailability(
+                    new ArrayList<>(Collections.nCopies(Integer.parseInt(room.getTotalRooms()), false))
+            );
         }
-        throw new AuthException("can not able to this only admin can do this activity");
+    
+        return hotelRepository.save(hotel);
     }
 
     @PutMapping("/flight/{id}")
